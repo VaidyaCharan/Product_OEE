@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{org}} - Settings | {{ machine_name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body data-machine-id="{{ machine_id }}">
+  <nav class="main-header">
+    <div class="logo">
+      <img src="/static/images/subroslogo.png" alt="Subros logo" height="40" />
+    </div>
+    <div class="machine-name">{{machine_name}}</div>
+    <div class="time"><span id="current-time"></span></div>
+  </nav>
+
+  <div class="container">
+
+    <div class="chart-container">
+      <h3>Planned vs Actual Production</h3>
+      <canvas id="productionChart" width="400" height="300"></canvas>
+    </div>
+
+    <div class="table-container">
+      <h3>Production Data Table</h3>
+
+      <div class="date-filter">
+        <label for="fromDate">From:</label>
+        <input type="datetime-local" id="fromDate">
+
+        <label for="toDate">To:</label>
+        <input type="datetime-local" id="toDate">
+
+        <button class="inline-btn" onclick="filterByDate()"><i class="bi bi-funnel-fill"></i></button>
+        <button class="inline-btn clear-btn" onclick="clearFilter()"><i class="bi bi-x-lg"></i></i></button>
+
+      </div>
+
+      <div class="table-scroll">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Avalability</th>
+              <th>Performance</th>
+              <th>Quality</th>
+              <th>OEE</th>
+              <th>Planned Qty</th>
+              <th>Actual Qty</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in data %}
+            <tr>
+              <td>{{ row.T_Timestamp }}</td>
+              <td>{{ row.AVA }}</td>
+              <td>{{ row.PFR }}</td>
+              <td>{{ row.QUA }}</td>
+              <td>{{ row.OEE }}</td>
+              <td>{{ row.PlanQtyShft }}</td>
+              <td>{{ row.ActualShift }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+
+      <a href="/export/excel/{{ machine_id }}" class="export-btn" title="Export to Excel"><i
+          class="bi bi-file-earmark-spreadsheet"></i></a>
+      <a href="/export/pdf" class="export-btn" title="Export to PDF"><i class="bi bi-filetype-pdf"></i></a>
+    </div>
+
+    <div><a href="{{ url_for('machine_dashboard', machine_id=machine_id) }}"><button
+          class="grid-button">Previous</button></a></div>
+  </div>
+
+  <!-- External JS File -->
+  <script src="/static/js/script.js"></script>
+  <script src="/static/js/settings.js"></script>
+
+  <script>
+    // Update table automatically
+    function updateTable() {
+      const machineId = document.body.getAttribute("data-machine-id");
+
+      fetch(`/get_settings_data/${machineId}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log("Fetched rows:", data); // Debug log
+          const tbody = document.querySelector("#dataTable tbody");
+          tbody.innerHTML = "";
+
+          data.forEach(row => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                    <td>${row.T_Timestamp}</td>
+                    <td>${row.AVA}</td>
+                    <td>${row.PFR}</td>
+                    <td>${row.QUA}</td>
+                    <td>${row.OEE}</td>
+                    <td>${row.PlanQtyShft}</td>
+                    <td>${row.ActualShift}</td>
+                `;
+            tbody.appendChild(tr);
+          });
+        })
+        .catch(error => console.error("Fetch error:", error));
+    }
+
+    // Start polling every 1 second
+    updateTable();
+    setInterval(updateTable, 1000);</script>
+
+
+</body>
+
+</html>

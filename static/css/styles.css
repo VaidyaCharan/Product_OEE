@@ -1,0 +1,509 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  height: 110px;
+}
+
+.logo img {
+  height: 60px;
+}
+
+.machine-name,
+.time {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #363c85;
+}
+
+.machine-name{
+ text-transform: uppercase;
+
+}
+.main-area {
+  padding: 20px;
+}
+
+.oee-gauges-section h2 {
+  text-align: center;
+  color: darkgreen;
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 50px 0px;
+}
+
+.gauges-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 30px;
+  width: 100%;
+  margin-top: 70px;
+}
+
+.gauge-box {
+  flex: 1 1 200px;
+  max-width: 300px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 25px 40px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  position: relative;
+}
+
+.gauge-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #34495e;
+  pointer-events: none;
+  text-align: center;
+}
+
+.data-grid-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin: 50px 0px;
+}
+
+.data-grid-box {
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+
+.data-grid-box input {
+  font-size: 2rem;
+  text-align: center;
+  border: none;
+  background: transparent;
+  width: 100%;
+  outline: none;
+}
+
+.data-grid-box input:focus {
+  background-color: white;
+}
+
+.input-grid {
+  margin-top: 5px;
+  padding: 5px 0px;
+  font-weight: 400;
+}
+
+/* Remove number input arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.yellow {
+  background-color: #fff3cd;
+  color: #856404;
+  border: solid 1px solid #856404;
+}
+
+.green {
+  background-color: #d4edda;
+  color: #155724;
+  border: solid 1px solid #155724;
+}
+
+.red {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: solid 1px solid #721c24;
+}
+
+.button-container>div {
+  padding: 0;
+}
+
+.button-container {
+  margin: 50px 0px;
+
+}
+
+.grid-button {
+  width: 100%;
+  height: 60px;
+  font-size: 1.2rem;
+  color: #ffffff;
+  background-color: #363c85;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.grid-button:hover {
+  background-color: #0d47a1;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .machine-name,
+  .time {
+    margin-top: 10px;
+  }
+
+  .gauges-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gauge-box {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+
+/* Page: Settings CSS */
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* Chart Container */
+.chart-container {
+  flex: 1;
+  min-width: 350px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Container */
+.table-container {
+  flex: 1;
+  min-width: 350px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Filter Input */
+#filterInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Table Styles */
+#dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Roboto', sans-serif;
+}
+
+#dataTable thead {
+  background-color: #363c85;
+  color: white;
+}
+
+#dataTable th,
+#dataTable td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+#dataTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#dataTable tbody tr:hover {
+  background-color: #dce9ff;
+}
+
+/* Export Button Styles */
+.export-btn {
+  display: inline-block;
+  margin: 10px 8px 0px 0px;
+  background-color: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.export-btn:hover {
+  background-color: #218838;
+}
+
+.export-btn i {
+  vertical-align: middle;
+}
+
+/* Main Button */
+.main-button {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  padding: 10px 25px;
+  font-size: 17px;
+  background-color: #363c85;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.main-button:hover {
+  background-color: #084298;
+}
+
+/* Scrollable Table Wrapper */
+.table-scroll {
+  max-height: 500px;
+  /* adjust height as needed */
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#dataTable thead th {
+  position: sticky;
+  top: 0;
+  background-color: #363c85;
+  z-index: 2;
+}
+
+.date-filter {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.date-filter input,
+.date-filter button {
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.inline-btn {
+  height: 35px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  background-color: #363c85;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.inline-btn:hover {
+  background-color: #0d47a1;
+}
+
+/* Container for date filter inputs */
+.date-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Style for the datetime-local input */
+.date-filter input[type="datetime-local"] {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Style for the labels */
+.date-filter label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Style for the filter button */
+.date-filter button {
+  padding: 8px 16px;
+  background-color: #363c85;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.date-filter button:hover {
+  background-color: #252c6a;
+}
+
+
+/* Navigation CSS */
+.swiper-container {
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+}
+
+.swiper {
+  width: 100%;
+  padding-bottom: 30px;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.machine-card {
+  width: 340px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.machine-card:hover {
+  transform: translateY(-6px);
+}
+
+.machine-card-inner {
+  padding: 24px;
+  text-align: left;
+}
+
+.machine-title {  
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 18px;
+}
+
+.oee-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stat-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.stat-row label {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.stat-row span {
+  font-weight: bold;
+  color: #333;
+}
+
+.output-badge {
+  background-color: #e3f2fd;
+  color: #1e88e5;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 4px 0;
+}
+
+.fill {
+  height: 100%;
+}
+
+.machine-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #363c85;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.machine-button:hover {
+  background-color: #155ab6;
+  /* transform: scale(1.05); */
+}
+
+.swiper-pagination-bullets {
+  bottom: 0;
+}
+
+.swiper-pagination-bullet {
+  background: #1a237e;
+}
+
+.filter-search {
+  text-align: center;
+  padding: 20px 10px;
+}
+
+#machineSearch {
+  padding: 10px 15px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}

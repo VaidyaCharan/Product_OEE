@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{org}} - OEE | {{ data.machine_name }}</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Chart.js & Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@1.0.3"></script>
+</head>
+
+<body data-machine-id="{{ machine_id }}">
+  <nav class="main-header">
+    <div class="logo">
+      <img src="/static/images/subroslogo.png" alt="Subros logo" />
+    </div>
+    <div class="machine-name">{{ data.machine_name }}</div>
+    <div class="time"><span id="current-time"></span></div>
+  </nav>
+
+  <div class="main-area">
+    <div class="oee-gauges-section">
+      <h2 class="animate">MACHINE RUNNING</h2>
+
+      <div class="gauges-container">
+        <div class="gauge-box">
+          <canvas id="gauge-availability"></canvas>
+          <div class="gauge-label">AVA<br><span class="gauge-value" id="value-ava"></span></div>
+        </div>
+        <div class="gauge-box">
+          <canvas id="gauge-quality"></canvas>
+          <div class="gauge-label">QUA<br><span class="gauge-value" id="value-qua"></span></div>
+        </div>
+        <div class="gauge-box">
+          <canvas id="gauge-performance"></canvas>
+          <div class="gauge-label">PFR<br><span class="gauge-value" id="value-pfr"></span></div>
+        </div>
+        <div class="gauge-box">
+          <canvas id="gauge-oee"></canvas>
+          <div class="gauge-label">OEE<br><span class="gauge-value" id="value-oee"></span></div>
+        </div>
+      </div>
+
+      <div class="data-grid-section">
+        <div class="data-grid-box green">Cycle Time<br><input class="input-grid" type="number" value="33"></div>
+        <div class="data-grid-box yellow">Plan Time<br><input class="input-grid" type="number" value="445"></div>
+        <div class="data-grid-box yellow">Plan Qty/Shift<br><input class="input-grid" type="number" value="800"></div>
+        <div class="data-grid-box yellow">Plan Qty/Hr<br><input class="input-grid" type="number" value="100"></div>
+        <div class="data-grid-box green">Actual/Shift<br><input class="input-grid" type="number" value="33"></div>
+        <div class="data-grid-box green">Actual/Hr<br><input class="input-grid" type="number" value="3"></div>
+        <div class="data-grid-box red">Variance/Shift<br><input class="input-grid" type="number" value="797"></div>
+        <div class="data-grid-box red">Variance/Hr<br><input class="input-grid" type="number" value="97"></div>
+      </div>
+
+      <div class="data-grid-section button-container">
+        <div><button class="grid-button">Hours Reset</button></div>
+        <div><button class="grid-button">W.L.T</button></div>
+        <div><button class="grid-button">H.L.T</button></div>
+        <div><button class="grid-button">Shift Reset</button></div>
+        <div><button class="grid-button">Machine Idle</button></div>
+        <div><button class="grid-button">Maint. Stop</button></div>
+        <div><button class="grid-button">QC Stop</button></div>
+        <div><a href="{{ url_for('settings', machine_id=machine_id, machine_name = data.machine_name) }}"><button
+              class="grid-button">Settings</button></a></div>
+        <div><button class="grid-button" onclick="window.location.href='/'"><i class="fa fa-sign-out"
+              style="font-size:48px;"></i></button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Font Awesome CDN for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- JavaScript: Chart Setup and API Call -->
+  <script src="/static/js/script.js"></script>
+  <script src="/static/js/dashboard.js"></script>
+</body>
+
+</html>

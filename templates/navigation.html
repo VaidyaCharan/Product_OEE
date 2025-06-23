@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{org}} - Machine Overview</title>
+
+  <!-- Fonts and CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Chart.js (Optional for future charts) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel@1.0.3"></script>
+</head>
+
+<body>
+  <nav class="main-header">
+    <div class="logo">
+      <img src="/static/images/subroslogo.png" alt="Subros logo" />
+    </div>
+    <div class="machine-name"></div>
+    <div class="time"><span id="current-time"></span></div>
+  </nav>
+
+  <div class="main-area">
+    <div class="filter-search">
+      <input type="text" id="machineSearch" placeholder="Search Machine Name...">
+    </div>
+
+    <div class="swiper-container">
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          {% for i in range(1, max_machine) %}
+          <div class="swiper-slide machine-card" data-machine-id="{{ i }}" data-machine-name="{{ m_name[i-1] }}">
+            <div class="machine-card-inner">
+              <div class="machine-title">{{i}}. {{ m_name[i-1] }}</div>
+              <div class="oee-stats">
+
+                <div class="stat-row">
+                  <label>Availability</label>
+                  <div class="progress-bar">
+                    <div class="fill"
+                      style="width: {{ data_AVA[i-1]|default(0) }}%; background: linear-gradient(90deg, #66bb6a, #ffa726);">
+                    </div>
+                  </div>
+                  <span>{{ data_AVA[i-1]|default(0) }}%</span>
+                </div>
+
+                <div class="stat-row">
+                  <label>Performance</label>
+                  <div class="progress-bar">
+                    <div class="fill"
+                      style="width: {{ data_PFR[i-1]|default(0) }}%; background: linear-gradient(90deg, #42a5f5, #ab47bc);">
+                    </div>
+                  </div>
+                  <span>{{ data_PFR[i-1]|default(0) }}%</span>
+                </div>
+
+                <div class="stat-row">
+                  <label>Quality</label>
+                  <div class="progress-bar">
+                    <div class="fill"
+                      style="width: {{ data_QUA[i-1]|default(0) }}%; background: linear-gradient(90deg, #29b6f6, #ef5350);">
+                    </div>
+                  </div>
+                  <span>{{ data_QUA[i-1]|default(0) }}%</span>
+                </div>
+
+                <div class="stat-row">
+                  <label>OEE</label>
+                  <div class="progress-bar">
+                    <div class="fill"
+                      style="width: {{ data_OEE[i-1]|default(0) }}%; background: linear-gradient(90deg, #66bb6a, #ffa726);">
+                    </div>
+                  </div>
+                  <span>{{ data_OEE[i-1]|default(0) }}%</span>
+                </div>
+
+                <div class="stat-row">
+                  <label>Output</label>
+                  <span class="output-badge">{{ 100 + (i % 20) }}</span>
+                </div>
+              </div>
+              <a href="{{ url_for('machine_dashboard', machine_id=i) }}" class="machine-button">View Dashboard</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="/static/js/script.js"></script>
+  <script src="/static/js/navigation.js"></script>
+
+</body>
+
+</html>
