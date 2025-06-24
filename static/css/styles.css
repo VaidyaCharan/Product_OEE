@@ -27,29 +27,50 @@ body {
   color: #363c85;
 }
 
-.machine-name{
- text-transform: uppercase;
+.machine-name {
+  text-transform: uppercase;
 
 }
+
 .main-area {
   padding: 20px;
 }
 
 .oee-gauges-section h2 {
   text-align: center;
-  color: darkgreen;
   font-size: 3rem;
   font-weight: bold;
-  margin: 50px 0px;
+  padding: 40px 0px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  background-color: #d4edda;
+  color: #155724;
+  border: solid 1px solid #155724;
 }
 
 .gauges-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 30px;
   width: 100%;
-  margin-top: 70px;
+}
+
+.gear {
+  width: 45px;
+  height: 38px;
+  animation: rotate 2s linear infinite;
+  fill: #155724;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .gauge-box {
@@ -79,7 +100,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 15px;
-  margin: 50px 0px;
+  margin: 40px 0px;
 }
 
 .data-grid-box {
@@ -420,7 +441,7 @@ input[type=number] {
   text-align: left;
 }
 
-.machine-title {  
+.machine-title {
   font-size: 1.4rem;
   font-weight: bold;
   color: #2c3e50;
