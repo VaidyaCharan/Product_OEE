@@ -1,8 +1,6 @@
 import snap7, time, random, pyodbc
-
 from snap7.util import get_real
 from datetime import datetime
-
 
 # SQL Server Configuration
 DB_CONNECTION_STRING = (
@@ -21,14 +19,12 @@ PLCs = [
 DB_NUMBER = 1000
 BYTES_PER_MACHINE = 16  # 4 REALs x 4 bytes
 
-
 def connect_to_plc(ip, rack, slot):
     client = snap7.client.Client()
     client.connect(ip, rack, slot)
     if not client.get_connected():
         raise ConnectionError(f"Connection failed for PLC {ip}")
     return client
-
 
 def read_oee_for_machine(client, machine_index):
     offset = BYTES_PER_MACHINE * machine_index
@@ -58,7 +54,6 @@ def update_machine_in_db(machine_id, ava, pfr, qua, oee,):
     conn.commit()
     cursor.close()
     conn.close()
-
 
 def process_plc(plc_config):
     try:
