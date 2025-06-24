@@ -76,7 +76,7 @@
 
       <a href="/export/excel/{{ machine_id }}" class="export-btn" title="Export to Excel"><i
           class="bi bi-file-earmark-spreadsheet"></i></a>
-      <a href="/export/pdf" class="export-btn" title="Export to PDF"><i class="bi bi-filetype-pdf"></i></a>
+      <a href="/export/pdf/{{ machine_id }}" class="export-btn" title="Export to PDF"><i class="bi bi-filetype-pdf"></i></a>
     </div>
 
     <div><a href="{{ url_for('machine_dashboard', machine_id=machine_id) }}"><button

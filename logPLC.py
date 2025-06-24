@@ -34,10 +34,10 @@ def read_oee_for_machine(client, machine_index):
     offset = BYTES_PER_MACHINE * machine_index
     data = client.db_read(DB_NUMBER, offset, BYTES_PER_MACHINE)
 
-    ava = get_real(data, 0)
-    pfr = get_real(data, 4)
-    qua = get_real(data, 8)
-    oee = (ava * pfr * qua) / 10000
+    ava = round(get_real(data, 0),2)
+    pfr = round(get_real(data, 4),2)
+    qua = round(get_real(data, 8),2)
+    oee = round((ava * pfr * qua) / 10000,2)
     return ava, pfr, qua, oee
 
 def update_machine_in_db(machine_id, ava, pfr, qua, oee,):

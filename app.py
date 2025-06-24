@@ -1,6 +1,12 @@
 from flask import Flask, render_template, jsonify, send_file
-import pyodbc, threading, time, logPLC, random
+import pyodbc, threading, time, logPLC, random, os
 import pandas as pd
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Image, Spacer
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+
+
 
 from io import BytesIO
 from waitress import serve
@@ -223,6 +229,102 @@ def export_excel(machine_id):
             download_name=f'MC_{machine_id}_Export_{t}.xlsx',
             mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
+    except Exception as e:
+        return jsonify({"error": f"Failed to export data: {str(e)}"}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/export/pdf/<int:machine_id>')
+def export_pdf(machine_id):
+    conn = None
+    try:
+        conn = get_db_connection()
+        query = f"SELECT * FROM MC_{machine_id} ORDER BY ID DESC"
+        df = pd.read_sql(query, conn)
+
+        if df.empty:
+            return jsonify({"error": "No data found."}), 404
+
+        # Set page size: 16 x 10 inches
+        custom_page_size = (14 * inch, 10 * inch)
+
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=custom_page_size,
+            rightMargin=30,
+            leftMargin=30,
+            topMargin=30,
+            bottomMargin=30
+        )
+
+        elements = []
+        styles = getSampleStyleSheet()
+
+        # ====== LOGO + HEADING SECTION ======
+        logo_path = os.path.join('static', 'subroslogo.png')
+        if os.path.exists(logo_path):
+            logo = Image(logo_path, width=1.5*inch, height=1.0*inch)
+        else:
+            logo = Paragraph("", styles["Normal"])
+
+        title = Paragraph(f"<b>Machine {machine_id} - Exported Report | Subros</b>", styles['Title'])
+        heading_table = Table([[title, logo]], colWidths=[8*inch, 2*inch])
+        heading_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+        ]))
+        elements.append(heading_table)
+        elements.append(Spacer(1, 0.3*inch))
+
+        # ====== TABLE DATA ======
+        table_data = [df.columns.tolist()] + df.values.tolist()
+
+        # Optional: Truncate long text entries
+        max_len = 40
+        for row_idx in range(1, len(table_data)):
+            table_data[row_idx] = [
+                str(cell)[:max_len] + "..." if isinstance(cell, str) and len(cell) > max_len else str(cell)
+                for cell in table_data[row_idx]
+            ]
+
+        # ====== TABLE STYLING ======
+        table = Table(table_data, repeatRows=1)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#020068")),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 0), (-1, -1), 8),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.whitesmoke, colors.lightgrey]),
+        ]))
+
+        elements.append(table)
+        # ====== FOOTER ======
+        footer = Paragraph(
+            "<font size='25'><i>This document is generated from real-time data stored in the database. © Subros</i></font>",
+            styles['Normal']
+        )
+        elements.append(footer)
+        elements.append(Spacer(1, 0.5*inch))
+
+        
+
+        # ====== BUILD PDF ======
+        doc.build(elements)
+        buffer.seek(0)
+
+        return send_file(
+            buffer,
+            as_attachment=True,
+            download_name=f'MC_{machine_id}_Export.pdf',
+            mimetype='application/pdf'
+        )
+
     except Exception as e:
         return jsonify({"error": f"Failed to export data: {str(e)}"}), 500
     finally:
