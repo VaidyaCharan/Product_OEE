@@ -102,11 +102,11 @@
           data.forEach(row => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                    <td>${row.T_Timestamp}</td>
-                    <td>${row.AVA}</td>
-                    <td>${row.PFR}</td>
-                    <td>${row.QUA}</td>
-                    <td>${row.OEE}</td>
+                    <td>${row.T_Timestamp.replace(/GMT.*/, '').trim()}</td>
+                    <td>${parseFloat(row.AVA).toFixed(2)}</td>
+                    <td>${parseFloat(row.PFR).toFixed(2)}</td>
+                    <td>${parseFloat(row.QUA).toFixed(2)}</td>
+                    <td>${parseFloat(row.OEE).toFixed(2)}</td>
                     <td>${row.PlanQtyShft}</td>
                     <td>${row.ActualShift}</td>
                 `;
